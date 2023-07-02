@@ -11,15 +11,28 @@ defmodule ElixirTodoListWeb.TodoLive do
     {:ok, socket}
   end
 
-  def handle_event("save-item", %{"text" => text}, socket) do
-    Item.create_item(%{text: text})
+  defp blank?(string), do: "" == string |> to_string() |> String.trim()
 
-    socket
-    |> clear_flash()
-    |> put_flash(:info, "Item created successfully")
-    |> assign(items: Item.list_items())
-    # {:noreply, socket}
-    |> (&{:noreply, &1}).()
+  def handle_event("save-item", %{"text" => text}, socket) do
+    IO.inspect(blank?(text))
+
+    case blank?(text) do
+      false ->
+        Item.create_item(%{text: text})
+
+        socket
+        |> clear_flash()
+        |> put_flash(:info, "Item created successfully")
+        |> assign(items: Item.list_items())
+        # {:noreply, socket}
+        |> (&{:noreply, &1}).()
+
+      true ->
+        socket
+        |> clear_flash()
+        |> put_flash(:error, "Item text should not be empty")
+        |> (&{:noreply, &1}).()
+    end
   end
 
   def handle_event("delete-item", data, socket) do
@@ -42,7 +55,6 @@ defmodule ElixirTodoListWeb.TodoLive do
           class="new-item"
           type="text"
           name="text"
-          required
           placeholder="Add todo list item"
           autocomplete="off"
         />
