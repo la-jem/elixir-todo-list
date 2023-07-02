@@ -7,3 +7,15 @@
 #todo-list {
   @apply mt-8 max-w-3xl mx-auto mb-6;
 }
+
+#todo-list .new-item {
+  @apply input input-bordered w-full max-w-xs;
+}
+
+#todo-list .create {
+  @apply btn btn-primary;
+}
+
+#todo-list .delete {
+  @apply btn btn-secondary;
+}

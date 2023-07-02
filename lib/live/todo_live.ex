@@ -39,16 +39,16 @@ defmodule ElixirTodoListWeb.TodoLive do
           placeholder="Add todo list item"
           autocomplete="off"
         />
-        <.button phx-disable-with="Saving...">
+        <button class="create" phx-disable-with="Saving...">
           Add Todo
-        </.button>
+        </button>
       </form>
 
       <div :for={item <- @items} class="item">
         <div class="text">
           <%= item.text %>
         </div>
-        <.button class="delete" phx-click="delete-item" phx-value-id={item.id}>Delete Todo</.button>
+        <button class="delete" phx-click="delete-item" phx-value-id={item.id}>Delete Todo</button>
       </div>
     </div>
     """
