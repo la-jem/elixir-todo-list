@@ -13,16 +13,23 @@ defmodule ElixirTodoListWeb.TodoLive do
 
   def handle_event("save-item", %{"text" => text}, socket) do
     Item.create_item(%{text: text})
-    socket = assign(socket, items: Item.list_items())
-    {:noreply, socket}
+
+    socket
+    |> clear_flash()
+    |> put_flash(:info, "Item created successfully")
+    |> assign(items: Item.list_items())
+    # {:noreply, socket}
+    |> (&{:noreply, &1}).()
   end
 
   def handle_event("delete-item", data, socket) do
     Item.delete_item(Map.get(data, "id"))
 
-    socket = assign(socket, items: Item.list_items())
-
-    {:noreply, socket}
+    socket
+    |> clear_flash()
+    |> put_flash(:info, "Item deleted successfully")
+    |> assign(items: Item.list_items())
+    |> (&{:noreply, &1}).()
   end
 
   def render(assigns) do
