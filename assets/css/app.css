@@ -2,20 +2,30 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* Customize font by calling @import(font url here) */
+
 /* This file is for your main application CSS */
 
 #todo-list {
   @apply mt-8 max-w-3xl mx-auto mb-6;
 }
 
+#todo-list h1 {
+  @apply text-2xl font-serif;
+}
+
+#todo-list form {
+  @apply join;
+}
+
 #todo-list .new-item {
-  @apply input input-bordered w-full max-w-xs;
+  @apply rounded-none input input-bordered join-item;
 }
 
 #todo-list .create {
-  @apply btn btn-primary;
+  @apply rounded-none btn join-item;
 }
 
 #todo-list .delete {
-  @apply btn btn-secondary;
+  @apply rounded-none btn btn-secondary;
 }
