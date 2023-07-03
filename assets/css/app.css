@@ -2,8 +2,41 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* Customize font by calling @import(font url here) */
+
 /* This file is for your main application CSS */
 
 #todo-list {
-  @apply mt-8 max-w-3xl mx-auto mb-6;
+  @apply mt-8 mx-auto max-w-5xl mb-6;
+}
+
+#todo-list h1 {
+  @apply text-2xl font-serif;
+}
+
+#todo-list form {
+  @apply join;
+}
+
+#todo-list .new-item {
+  @apply rounded-none input input-bordered join-item;
+}
+
+#todo-list .create {
+  @apply rounded-none btn join-item;
+}
+
+#todo-list .item {
+  @apply block my-3 join;
+}
+#todo-list .item .text {
+  @apply rounded-none w-2/5 inline-block py-3 bg-slate-200 join-item;
+}
+
+#todo-list .item .update {
+  @apply rounded-none btn join-item;
+}
+
+#todo-list .item .delete {
+  @apply rounded-none btn btn-secondary join-item;
 }

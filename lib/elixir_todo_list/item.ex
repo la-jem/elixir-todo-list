@@ -71,7 +71,9 @@ defmodule ElixirTodoList.Item do
   def list_items do
     query =
       from i in Item,
-        where: i.deleted == false
+        where: i.deleted == false,
+        # Update to select the ranking when added
+        order_by: [desc: i.inserted_at]
 
     Repo.all(query)
   end
