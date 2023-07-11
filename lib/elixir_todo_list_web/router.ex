@@ -1,5 +1,4 @@
 defmodule ElixirTodoListWeb.Router do
-  alias Inspect.ElixirTodoList
   use ElixirTodoListWeb, :router
 
   import ElixirTodoListWeb.UserAuth
