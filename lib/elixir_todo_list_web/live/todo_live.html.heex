@@ -1,5 +1,9 @@
 <div id="todo-list">
   <h1>TODO LIST</h1>
+  <pre>
+    <%= @current_user.email %>
+    <%= @session_id %>
+</pre>
   <form id="form" phx-submit="save-item">
     <input
       id="new-item"

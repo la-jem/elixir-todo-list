@@ -1,12 +1,20 @@
 defmodule ElixirTodoListWeb.TodoLive do
   use ElixirTodoListWeb, :live_view
 
-  alias ElixirTodoList.Item
+  alias ElixirTodoList.Items
+  alias ElixirTodoList.Accounts
 
-  def mount(_params, _session, socket) do
-    items = Item.list_items()
+  def mount(_params, session, socket) do
+    items = Items.list_items()
+    user = Accounts.get_user_by_session_token(session["user_token"])
 
-    socket = assign(socket, items: items, editing: nil)
+    socket =
+      assign(socket,
+        items: items,
+        editing: nil,
+        session_id: session["live_socket_id"],
+        current_user: user
+      )
 
     {:ok, socket}
   end
@@ -21,50 +29,50 @@ defmodule ElixirTodoListWeb.TodoLive do
     # Trigger appropriate action
     case blank?(text) do
       false ->
-        Item.create_item(%{text: text})
+        Items.create_item(%{text: text})
 
         socket
         |> clear_flash()
-        |> put_flash(:info, "Item created successfully")
-        |> assign(items: Item.list_items())
+        |> put_flash(:info, "Items created successfully")
+        |> assign(items: Items.list_items())
         # {:noreply, socket}
         |> (&{:noreply, &1}).()
 
       true ->
         socket
         |> clear_flash()
-        |> put_flash(:error, "Item text should not be empty")
+        |> put_flash(:error, "Items text should not be empty")
         |> (&{:noreply, &1}).()
     end
   end
 
   def handle_event("delete-item", data, socket) do
-    Item.delete_item(Map.get(data, "id"))
+    Items.delete_item(Map.get(data, "id"))
 
     socket
     |> clear_flash()
-    |> put_flash(:info, "Item deleted successfully")
-    |> assign(items: Item.list_items())
+    |> put_flash(:info, "Items deleted successfully")
+    |> assign(items: Items.list_items())
     |> (&{:noreply, &1}).()
   end
 
   def handle_event("update-item", %{"id" => item_id, "text" => text}, socket) do
     case blank?(text) do
       false ->
-        current_item = Item.get_item!(item_id)
-        Item.update_item(current_item, %{text: text})
+        current_item = Items.get_item!(item_id)
+        Items.update_item(current_item, %{text: text})
 
         socket
         |> clear_flash()
-        |> put_flash(:info, "Item updated successfully")
-        |> assign(items: Item.list_items(), editing: nil)
+        |> put_flash(:info, "Items updated successfully")
+        |> assign(items: Items.list_items(), editing: nil)
         |> (&{:noreply, &1}).()
 
       true ->
         socket
         |> clear_flash()
-        |> put_flash(:error, "Item text should not be empty")
-        |> assign(items: Item.list_items(), editing: nil)
+        |> put_flash(:error, "Items text should not be empty")
+        |> assign(items: Items.list_items(), editing: nil)
         |> (&{:noreply, &1}).()
     end
   end
