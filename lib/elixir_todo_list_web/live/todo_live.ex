@@ -2,18 +2,20 @@ defmodule ElixirTodoListWeb.TodoLive do
   use ElixirTodoListWeb, :live_view
 
   alias ElixirTodoList.Items
-  alias ElixirTodoList.Accounts
+  # alias ElixirTodoList.Accounts
 
   def mount(_params, session, socket) do
     items = Items.list_items()
-    user = Accounts.get_user_by_session_token(session["user_token"])
+
+    # Done by the on_mount callback (:ensure_authenticated)
+    # user = Accounts.get_user_by_session_token(session["user_token"])
 
     socket =
       assign(socket,
         items: items,
         editing: nil,
-        session_id: session["live_socket_id"],
-        current_user: user
+        session_id: session["live_socket_id"]
+        # current_user: user
       )
 
     {:ok, socket}
