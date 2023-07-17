@@ -1,0 +1,38 @@
+<div id="todo-list">
+  <h1>TODO LIST</h1>
+  <pre>
+    <%= @current_user.email %>
+    <%= @session_id %>
+</pre>
+  <form id="form" phx-submit="save-item">
+    <input
+      id="new-item"
+      class="new-item"
+      type="text"
+      name="text"
+      placeholder="Add todo list item"
+      autocomplete="off"
+    />
+    <button class="create" phx-disable-with="Saving...">
+      Add Todo
+    </button>
+  </form>
+
+  <div :for={item <- @items} class="item">
+    <%= if item.id == @editing do %>
+      <form phx-submit="update-item" id="form-update">
+        <input id="update-item" class="new-item" type="text" name="text" value={item.text} />
+        <input type="hidden" name="id" value={item.id} />
+        <button class="update" phx-disable-with="Saving...">
+          Update Todo
+        </button>
+      </form>
+    <% else %>
+      <div class="text">
+        <%= item.text %>
+      </div>
+      <button class="update" phx-click="update-item" phx-value-id={item.id}>Edit Todo</button>
+      <button class="delete" phx-click="delete-item" phx-value-id={item.id}>Delete Todo</button>
+    <% end %>
+  </div>
+</div>

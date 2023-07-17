@@ -2,28 +2,12 @@
 # Since soft-deletion is implemented, filter out deleted records from all operations
 # https://hexdocs.pm/ecto/Ecto.Repo.html#c:prepare_query/3-examples
 
-defmodule ElixirTodoList.Item do
-  use Ecto.Schema
-  import Ecto.Changeset
-  import Ecto.Query, only: [from: 2]
+defmodule ElixirTodoList.Items do
   alias ElixirTodoList.Repo
 
-  # https://stackoverflow.com/questions/39854281/how-to-access-struct-inside-module-where-struct-defined-elixir/47501059
-  alias __MODULE__
+  alias ElixirTodoList.Items.Item
 
-  schema "items" do
-    field :deleted, :boolean, default: false
-    field :text, :string
-
-    timestamps()
-  end
-
-  @doc false
-  def changeset(item, attrs) do
-    item
-    |> cast(attrs, [:text, :deleted])
-    |> validate_required([:text, :deleted])
-  end
+  import Ecto.Query, only: [from: 2]
 
   @doc """
   Creates a item.
@@ -39,7 +23,7 @@ defmodule ElixirTodoList.Item do
   """
   def create_item(attrs \\ %{}) do
     %Item{}
-    |> changeset(attrs)
+    |> Item.changeset(attrs)
     |> Repo.insert()
   end
 
