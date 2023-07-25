@@ -1,18 +1,17 @@
 # ElixirTodoList
 
-To start your Phoenix server:
+## Requirements
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+- Docker
+- Docker Compose
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+## Run the Application
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+- Run via Docker
 
-## Learn more
+```bash
+docker compose up -d
+```
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+- Note: There is no docker build optimized for production use
+DO NOT RUN IN PRODUCTION
