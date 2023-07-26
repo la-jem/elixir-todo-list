@@ -8,7 +8,7 @@ defmodule ElixirTodoList.Items do
   alias ElixirTodoList.Items.Item
 
   import Ecto.Query, only: [from: 2]
-  import ElixirTodoList.Accounts, only: [get_user!: 1]
+  # import ElixirTodoList.Accounts, only: [get_user!: 1]
 
   @doc """
   Creates a item.
