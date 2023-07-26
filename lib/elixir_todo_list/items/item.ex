@@ -8,13 +8,17 @@ defmodule ElixirTodoList.Items.Item do
     field :deleted, :boolean, default: false
     field :text, :string
 
+    belongs_to :user, ElixirTodoList.Accounts.User
+    # belongs_to list
+    # belongs_to board
+
     timestamps()
   end
 
   @doc false
   def changeset(item, attrs) do
     item
-    |> cast(attrs, [:text, :deleted])
-    |> validate_required([:text, :deleted])
+    |> cast(attrs, [:text, :deleted, :user_id])
+    |> validate_required([:text, :deleted, :user_id])
   end
 end

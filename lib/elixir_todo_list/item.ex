@@ -8,6 +8,7 @@ defmodule ElixirTodoList.Items do
   alias ElixirTodoList.Items.Item
 
   import Ecto.Query, only: [from: 2]
+  import ElixirTodoList.Accounts, only: [get_user!: 1]
 
   @doc """
   Creates a item.
@@ -22,6 +23,10 @@ defmodule ElixirTodoList.Items do
 
   """
   def create_item(attrs \\ %{}) do
+    # Fetch the user from the database based on the user_id in attrs
+    # user = get_user!(attrs[:user_id])
+    # attrs_with_user_id = Map.put(attrs, :user_id, user.id)
+
     %Item{}
     |> Item.changeset(attrs)
     |> Repo.insert()
@@ -44,18 +49,18 @@ defmodule ElixirTodoList.Items do
   def get_item!(id), do: Repo.get!(Item, id)
 
   @doc """
-  Returns the list of items.
+  Returns the list of items given a user id.
 
   ## Examples
 
-      iex> list_items()
+      iex> list_items(user_id)
       [%Item{}, ...]
 
   """
-  def list_items do
+  def list_items(user_id) do
     query =
       from i in Item,
-        where: i.deleted == false,
+        where: i.deleted == false and i.user_id == ^user_id,
         # Update to select the ranking when added
         order_by: [desc: i.inserted_at]
 
