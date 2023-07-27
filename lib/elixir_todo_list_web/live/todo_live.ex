@@ -21,6 +21,8 @@ defmodule ElixirTodoListWeb.TodoLive do
     {:ok, socket}
   end
 
+  # Move to changeset
+  # Consider using validate_length/3 https://hexdocs.pm/ecto/Ecto.Changeset.html#validate_length/3
   defp is_blank?(string), do: "" == string |> to_string() |> String.trim()
 
   defp validate_blank_text(socket, text, success_fn, success_msg, failure_msg) do

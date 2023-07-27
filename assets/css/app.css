@@ -18,6 +18,10 @@
   @apply join;
 }
 
+input.new-item {
+  @apply input w-full max-w-xs;
+}
+
 #todo-list .new-item {
   @apply rounded-none input input-bordered join-item;
 }
@@ -30,7 +34,7 @@
   @apply block my-3 join;
 }
 #todo-list .item .text {
-  @apply rounded-none w-2/5 inline-block py-3 bg-slate-200 join-item;
+  @apply input rounded-none w-2/5 inline-block py-3 bg-slate-200 join-item;
 }
 
 #todo-list .item .update {
