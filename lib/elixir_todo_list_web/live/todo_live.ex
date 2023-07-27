@@ -21,32 +21,36 @@ defmodule ElixirTodoListWeb.TodoLive do
     {:ok, socket}
   end
 
-  defp blank?(string), do: "" == string |> to_string() |> String.trim()
+  defp is_blank?(string), do: "" == string |> to_string() |> String.trim()
 
-  def handle_event("save-item", %{"text" => text}, socket) do
-    current_user = socket.assigns.current_user.id
-    IO.inspect(blank?(text))
-
-    # Refactor to its own handler
-    # Check if text is blank
-    # Trigger appropriate action
-    case blank?(text) do
+  defp validate_blank_text(socket, text, success_fn, success_msg, failure_msg) do
+    case is_blank?(text) do
       false ->
-        Items.create_item(%{text: text, user_id: current_user})
+        success_fn.(socket)
 
         socket
         |> clear_flash()
-        |> put_flash(:info, "Item created successfully")
-        |> assign(items: Items.list_items(current_user))
+        |> put_flash(:info, success_msg)
+        |> assign(items: Items.list_items(socket.assigns.current_user.id), editing: nil)
         # {:noreply, socket}
         |> (&{:noreply, &1}).()
 
       true ->
         socket
         |> clear_flash()
-        |> put_flash(:error, "Item text should not be empty")
+        |> put_flash(:error, failure_msg)
         |> (&{:noreply, &1}).()
     end
+  end
+
+  def handle_event("save-item", %{"text" => text}, socket) do
+    validate_blank_text(
+      socket,
+      text,
+      &Items.create_item(%{text: text, user_id: &1.assigns.current_user.id}),
+      "Item created successfully",
+      "Item should not be empty"
+    )
   end
 
   def handle_event("delete-item", data, socket) do
@@ -61,26 +65,16 @@ defmodule ElixirTodoListWeb.TodoLive do
   end
 
   def handle_event("update-item", %{"id" => item_id, "text" => text}, socket) do
-    current_user = socket.assigns.current_user.id
-
-    case blank?(text) do
-      false ->
-        current_item = Items.get_item!(item_id)
-        Items.update_item(current_item, %{text: text})
-
-        socket
-        |> clear_flash()
-        |> put_flash(:info, "Item updated successfully")
-        |> assign(items: Items.list_items(current_user), editing: nil)
-        |> (&{:noreply, &1}).()
-
-      true ->
-        socket
-        |> clear_flash()
-        |> put_flash(:error, "Item text should not be empty")
-        |> assign(items: Items.list_items(current_user), editing: nil)
-        |> (&{:noreply, &1}).()
-    end
+    validate_blank_text(
+      socket,
+      text,
+      &Items.update_item(Items.get_item!(item_id), %{
+        text: text,
+        user_id: &1.assigns.current_user.id
+      }),
+      "Item updated successfully",
+      "Item text should not be empty"
+    )
   end
 
   def handle_event("update-item", data, socket) do
